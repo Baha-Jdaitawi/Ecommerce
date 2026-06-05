@@ -2,15 +2,15 @@ import useAuth from "../features/auth/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 
-export const ProtectedRoute=({children})=>{
+export const ProtectedRoute = ({ children }) => {
 
-const{user,loading}=useAuth()
-const navigate=useNavigate()
+    const { user, loading } = useAuth()
+    const navigate = useNavigate()
 
-if(loading) return <p>is loading...</p>
+    if (loading) return <p>is loading...</p>
 
-if(!user) navigate("/")
+    if (!user) navigate("/")
 
-return children
+    return children
 
 }

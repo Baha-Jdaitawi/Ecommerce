@@ -1,12 +1,14 @@
-import useAuth from "../features/auth/hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
+import useAuth from '../features/auth/hooks/useAuth.js';
 
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
 
-export const AdminRoute = ({ children }) => {
-    const { user, loading } = useAuth()
+  if (loading) return <p>Loading...</p>;
+  if (!user) return <Navigate to="/login" />;
+  if (user.role !== 'admin') return <Navigate to="/" />;
 
-    if (loading) return <p>is loading...</p>
-    if (!user) return <Navigate to="/login" />
-    if (user.role !== "admin") return <Navigate to="/" />
-    return children
-}
+  return children;
+};
+
+export default AdminRoute;

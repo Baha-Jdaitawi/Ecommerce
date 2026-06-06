@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { getReviewsService, addReviewService, deleteReviewService } from '../services/reviewService.js';
+import { getReviewsService, addReviewService, deleteReviewService } from '../services/reviewServices.js';
 
-export const useReviews=()=>{
+const useReviews = () => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-const [reviews, setReviews] = useState([]);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
-
- const fetchReviews = async (product_id) => {
+  const fetchReviews = async (product_id) => {
     try {
       setLoading(true);
       setError(null);
@@ -34,8 +33,7 @@ const [error, setError] = useState(null);
     }
   };
 
-
-const deleteReview = async (id) => {
+  const deleteReview = async (id) => {
     try {
       setLoading(true);
       setError(null);
@@ -46,12 +44,9 @@ const deleteReview = async (id) => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
-return { reviews, loading, error, fetchReviews, addReview, deleteReview };
+  return { reviews, loading, error, fetchReviews, addReview, deleteReview };
+};
 
-
-
-
-
-}
+export default useReviews;

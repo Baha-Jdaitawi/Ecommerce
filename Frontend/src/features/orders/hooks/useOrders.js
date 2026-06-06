@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { checkoutService, getUserOrdersService, getOrderService } from '../services/orderService.js';
+import { checkoutService, getUserOrdersService, getOrderService } from '../services/ordersService.js';
 
-function useOrders() {
+const useOrders = () => {
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -47,6 +47,6 @@ function useOrders() {
   };
 
   return { orders, order, loading, error, fetchOrders, fetchOrder, checkout };
-}
+};
 
 export default useOrders;

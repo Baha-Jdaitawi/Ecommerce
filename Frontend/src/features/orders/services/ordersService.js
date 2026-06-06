@@ -1,4 +1,4 @@
-import { checkoutApi, getUserOrdersApi, getOrderApi } from '../api/orderApi.js';
+import { checkoutApi, getUserOrdersApi, getOrderApi } from '../api/ordersApi.js';
 
 export const checkoutService = async (items, shipping_address) => {
   const response = await checkoutApi(items, shipping_address);

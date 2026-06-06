@@ -1,64 +1,63 @@
-import { useState} from "react";
-import useAuth from "../hooks/useAuth";
-import {useNavigate} from "react-router-dom"
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth.js';
 
+const LoginForm = () => {
+  const { login, error, loading } = useAuth();
+  const navigate = useNavigate();
 
-export const LoginForm=()=>{
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-const {login,error,loading}=useAuth()
-const navigate=useNavigate()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = await login(email, password);
+    if (data) navigate('/');
+  };
 
-const[email,setEmail]=useState("")
-const[password,setPassword]=useState("")
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
+      <div>
+        <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">
+          Email
+        </label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="your@email.com"
+          className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
+        />
+      </div>
 
-const handleSubmit=async(e)=>{
+      <div>
+        <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">
+          Password
+        </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="••••••••"
+          className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
+        />
+      </div>
 
-e.preventDefault()
+      {error && <p className="text-red-500 text-sm tracking-wide">{error}</p>}
 
-const data=await login(email,password)
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-black text-white font-semibold tracking-widest uppercase py-4 text-sm hover:bg-red-500 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
 
-if(data) {
+    </form>
+  );
+};
 
-navigate("/")
-
-
-}
-
-}
-
-
-
-
-
-return (
-
-<form onSubmit={handleSubmit}>
-
-<div>
-<input value={email} onChange={(e)=>setEmail(e.target.value)}>Email</input>
-</div>
-
-
-<div>
-<input type="password" value={password} onChange={(e)=>setPassword(e.target.value)}> Password </input>
-</div>
-
-
-<button type="submit" disabled={loading}>{
-    
-loading?"loggin in....":"login"    
-    
-    
-}</button>
-
-
-
-</form>
-
-
-)
-
-}
-
-export default LoginForm
+export default LoginForm;

@@ -1,10 +1,4 @@
-import {
-    getStatsApi
-    , getAdminOrdersApi,
-    updateOrderStatusApi,
-    getAllUsersApi
-} from '../api/adminApi.js';
-
+import { getStatsApi, getAdminOrdersApi, updateOrderStatusApi, getAllUsersApi } from '../api/adminApi.js';
 
 export const getStatsService = async () => {
   const response = await getStatsApi();

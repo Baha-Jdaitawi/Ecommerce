@@ -1,35 +1,50 @@
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
+const ProductCard = ({ product }) => {
+  const { id, name, price, category, image_url, stock } = product;
 
-export const ProductCard = ({ product }) => {
+  return (
+    <div className="group relative bg-white">
 
-    const { id, name, price, category, image_url, stock } = product
+      {/* Image */}
+      <div className="relative overflow-hidden bg-gray-100 aspect-square">
+        <img
+          src={image_url || '/placeholder.png'}
+          alt={name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        {stock === 0 && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <span className="text-white font-semibold tracking-widest uppercase text-sm">Sold Out</span>
+          </div>
+        )}
+        <div className="absolute top-3 left-3">
+          <span className="bg-black text-white text-xs font-semibold tracking-widest uppercase px-3 py-1">
+            {category}
+          </span>
+        </div>
+      </div>
 
-    return (
+      {/* Info */}
+      <div className="pt-4 pb-2">
+        <Link to={`/products/${id}`}>
+          <h3 className="font-semibold text-black tracking-wide uppercase text-sm hover:text-red-500 transition-colors">
+            {name}
+          </h3>
+        </Link>
+        <p className="text-black font-bold text-lg mt-1">${price}</p>
+      </div>
 
-        <div>
-
-
-            <Link to={`/products/${id}`}>
-
-                <img src={image_url || '/placeholder.png'} alt={name} />
-
-            </Link>
-
-            <span>{name}</span>
-            <h3>{name}</h3>
-            <p>${price}</p>
-            {stock === 0 && <span>Out of stock</span>}
-
-
-<button disabled={stock === 0}>
-        Add to Cart
+      {/* Button */}
+      <button
+        disabled={stock === 0}
+        className="w-full bg-black text-white text-xs font-semibold tracking-widest uppercase py-3 mt-2 hover:bg-red-500 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        {stock === 0 ? 'Sold Out' : 'Add to Cart'}
       </button>
 
+    </div>
+  );
+};
 
-
-        </div>
-
-
-    )
-}
+export default ProductCard;

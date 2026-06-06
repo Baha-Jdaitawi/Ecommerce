@@ -1,14 +1,8 @@
-import { useState } from "react";
-import {
-    getStatsService,
-    getAdminOrdersService,
-    updateOrderStatusService,
-    getAllUsersService
-} from '../services/adminService.js';
+import { useState } from 'react';
+import { getStatsService, getAdminOrdersService, updateOrderStatusService, getAllUsersService } from '../services/adminService.js';
 
-export const useAdmin=()=>{
-
- const [stats, setStats] = useState(null);
+const useAdmin = () => {
+  const [stats, setStats] = useState(null);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -68,6 +62,6 @@ export const useAdmin=()=>{
   };
 
   return { stats, orders, users, loading, error, fetchStats, fetchOrders, updateOrderStatus, fetchUsers };
+};
 
-
-}
+export default useAdmin;

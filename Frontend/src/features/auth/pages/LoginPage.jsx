@@ -1,46 +1,50 @@
-import { useEffect } from "react";
-import LoginForm from "../components/LoginForm";
-import useAuth from "../hooks/useAuth";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth.js';
+import LoginForm from '../components/LoginForm.jsx';
 
+const LoginPage = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
-export const LoginPage = () => {
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/');
+    }
+  }, [user, loading]);
 
-    const { user, loading } = useAuth()
-    const navigate = useNavigate()
+  if (loading) return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
+  return (
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
 
-    useEffect(() => {
+      {/* Left - Black Panel */}
+      <div className="bg-black text-white hidden md:flex flex-col items-center justify-center px-16">
+        <h1 className="font-['Bebas_Neue'] text-[8rem] tracking-widest leading-none text-white">FORZA</h1>
+        <p className="text-gray-400 tracking-widest uppercase text-sm mt-4">Built for the relentless.</p>
+      </div>
 
-        if (!loading && user) {
-
-            navigate("/")
-
-
-        }
-
-
-
-
-    }, [user, loading])
-
-    return (
-
-        <div>
-
-            <h1>Login form</h1>
-
-            <LoginForm />
-
-            <p>Don't have an acount? <Link to="/reigister">Reegister</Link></p>
-
-
-
-
+      {/* Right - Form Panel */}
+      <div className="flex flex-col items-center justify-center px-6 md:px-16 py-16">
+        <div className="w-full max-w-md">
+          <p className="text-red-500 text-sm font-semibold tracking-[0.3em] uppercase mb-2">Welcome Back</p>
+          <h2 className="font-['Bebas_Neue'] text-5xl tracking-widest text-black mb-10">LOGIN</h2>
+          <LoginForm />
+          <p className="mt-6 text-sm text-gray-400 tracking-wide">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-black font-semibold hover:text-red-500 transition-colors">
+              Join Us
+            </Link>
+          </p>
         </div>
+      </div>
 
-    )
-}
+    </div>
+  );
+};
 
-export default LoginPage
+export default LoginPage;

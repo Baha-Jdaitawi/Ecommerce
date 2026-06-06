@@ -8,6 +8,11 @@ import ProductDetailPage from './features/products/pages/ProductDetailPage.jsx';
 import CartPage from './features/cart/pages/CartPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AdminRoute from './components/AdminRoute.jsx';
+import OrdersPage from './features/orders/pages/OrdersPage.jsx';
+import CheckoutPage from './features/orders/pages/CheckoutPage.jsx';
+import OrderDetailPage from './features/orders/pages/OrderDetailPage.jsx';
+
+
 
 function App() {
   return (
@@ -18,11 +23,21 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
-        <Route path="/cart" element={
+        <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        <Route path="/orders/:id" element={
           <ProtectedRoute>
-            <CartPage />
+            <OrderDetailPage />
           </ProtectedRoute>
         } />
+
+
+
+        <ProtectedRoute>
+          <CartPage />
+        </ProtectedRoute>
+
       </Routes>
     </AuthProvider>
   );

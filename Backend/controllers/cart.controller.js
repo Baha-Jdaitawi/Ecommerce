@@ -1,4 +1,5 @@
 import { getCartByUserId, addToCart, updateCartItem, removeFromCart, clearCart } from '../models/cart.model.js';
+import { getProductById } from '../models/product.model.js';
 
 export const getCart = async (req, res) => {
   try {
@@ -12,6 +13,15 @@ export const getCart = async (req, res) => {
 export const addItem = async (req, res) => {
   try {
     const { product_id, quantity } = req.body;
+
+    const product = await getProductById(product_id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    if (product.stock < (quantity || 1)) {
+      return res.status(400).json({ message: 'Not enough stock available' });
+    }
+
     const item = await addToCart(req.user.id, product_id, quantity || 1);
     res.status(201).json({ item });
   } catch (error) {
@@ -26,6 +36,12 @@ export const updateItem = async (req, res) => {
     if (!item) {
       return res.status(404).json({ message: 'Cart item not found' });
     }
+
+    const product = await getProductById(item.product_id);
+    if (product.stock < quantity) {
+      return res.status(400).json({ message: 'Not enough stock available' });
+    }
+
     res.status(200).json({ item });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });

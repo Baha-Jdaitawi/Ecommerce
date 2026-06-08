@@ -7,7 +7,7 @@ export const getDashboardStats = async (req, res) => {
     const totalUsers = await query('SELECT COUNT(*) FROM users WHERE role = $1', ['customer']);
     const totalOrders = await query('SELECT COUNT(*) FROM orders');
     const totalProducts = await query('SELECT COUNT(*) FROM products');
-    const totalRevenue = await query('SELECT SUM(total_amount) FROM orders WHERE status = $1', ['paid']);
+    const totalRevenue = await query('SELECT SUM(total_amount) FROM orders WHERE status = $1', ['delivered']);
 
     res.status(200).json({
       stats: {

@@ -31,6 +31,8 @@ export const getOrderById = async (id) => {
     [id]
   );
 
+  if (!order.rows[0]) return null;
+
   const items = await query(
     `SELECT order_items.*, products.name, products.image_url
      FROM order_items

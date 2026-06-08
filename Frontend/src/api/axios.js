@@ -7,3 +7,8 @@ export const api = axios.create({
 
 
 })
+
+export const getImageUrl = (path) => {
+  if (!path) return '/placeholder.png';
+  return `http://localhost:5000${path}`;
+}

@@ -6,6 +6,7 @@ import useAuth from '../../auth/hooks/useAuth.js';
 import useCart from '../../cart/hooks/useCart.js';
 import ReviewCard from '../../reviews/components/ReviewCard.jsx';
 import ReviewForm from '../../reviews/components/ReviewForm.jsx';
+import { getImageUrl } from '../../../api/axios.js';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const ProductDetailPage = () => {
         {/* Image */}
         <div className="bg-gray-100 aspect-square overflow-hidden">
           <img
-            src={product.image_url || '/placeholder.png'}
+            src={getImageUrl(product.image_url)}
             alt={product.name}
             className="w-full h-full object-cover"
           />

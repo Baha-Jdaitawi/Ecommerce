@@ -1,3 +1,5 @@
+import { getImageUrl } from '../../../api/axios.js';
+
 const CartItem = ({ item, onUpdate, onDelete }) => {
   const { id, name, price, quantity, image_url } = item;
 
@@ -7,7 +9,7 @@ const CartItem = ({ item, onUpdate, onDelete }) => {
       {/* Image */}
       <div className="bg-gray-100 w-28 h-28 flex-shrink-0 overflow-hidden">
         <img
-          src={image_url || '/placeholder.png'}
+          src={getImageUrl(image_url)}
           alt={name}
           className="w-full h-full object-cover"
         />

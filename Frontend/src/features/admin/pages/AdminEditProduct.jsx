@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useProducts from '../../products/hooks/useProducts.js';
+import { getImageUrl } from '../../../api/axios.js';
 
 const AdminEditProduct = () => {
   const { id } = useParams();
@@ -134,7 +135,7 @@ const AdminEditProduct = () => {
         <div>
           <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">Image</label>
           {product?.image_url && (
-            <img src={product.image_url} alt="current" className="w-24 h-24 object-cover bg-gray-100 mb-3" />
+            <img src={getImageUrl(product.image_url)} alt="current" className="w-24 h-24 object-cover bg-gray-100 mb-3" />
           )}
           <input
             type="file"

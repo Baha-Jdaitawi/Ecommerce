@@ -6,7 +6,8 @@ export const getProducts = async (req, res) => {
     const products = await getAllProducts(category, search);
     res.status(200).json({ products });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Get products error:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -18,7 +19,8 @@ export const getProduct = async (req, res) => {
     }
     res.status(200).json({ product });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Get product error:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -29,7 +31,8 @@ export const addProduct = async (req, res) => {
     const product = await createProduct(name, description, price, stock, category, image_url);
     res.status(201).json({ product });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Add product error:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -43,7 +46,8 @@ export const editProduct = async (req, res) => {
     }
     res.status(200).json({ product });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Edit product error:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -52,6 +56,7 @@ export const removeProduct = async (req, res) => {
     await deleteProduct(req.params.id);
     res.status(200).json({ message: 'Product deleted' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Remove product error:', error);
+    res.status(500).json({ message: error.message });
   }
 };

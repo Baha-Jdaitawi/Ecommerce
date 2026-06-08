@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import useCart from '../../cart/hooks/useCart.js';
+import { getImageUrl } from '../../../api/axios.js';
 
 const ProductCard = ({ product }) => {
   const { id, name, price, category, image_url, stock } = product;
+  const { addItem } = useCart();
 
   return (
     <div className="group relative bg-white">
@@ -9,7 +12,7 @@ const ProductCard = ({ product }) => {
       {/* Image */}
       <div className="relative overflow-hidden bg-gray-100 aspect-square">
         <img
-          src={image_url || '/placeholder.png'}
+          src={getImageUrl(image_url)}
           alt={name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
@@ -38,6 +41,7 @@ const ProductCard = ({ product }) => {
       {/* Button */}
       <button
         disabled={stock === 0}
+        onClick={() => addItem(id, 1)}
         className="w-full bg-black text-white text-xs font-semibold tracking-widest uppercase py-3 mt-2 hover:bg-red-500 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
       >
         {stock === 0 ? 'Sold Out' : 'Add to Cart'}

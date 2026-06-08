@@ -1,21 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from '../hooks/useOrders.js';
 import useCart from '../../cart/hooks/useCart.js';
 
 const CheckoutPage = () => {
   const { checkout, loading, error } = useOrders();
-  const { cart } = useCart();
+  const { cart, getCart } = useCart();
   const navigate = useNavigate();
 
   const [shippingAddress, setShippingAddress] = useState('');
+
+  useEffect(() => {
+    getCart();
+  }, []);
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = async (e) => {
     e.preventDefault();
     const data = await checkout(cart, shippingAddress);
-    if (data) navigate('/orders');
+    if (data?.url) window.location.href = data.url;
   };
 
   return (

@@ -26,5 +26,4 @@ async function down(db) {
     DROP TABLE IF EXISTS orders;
   `);
 }
-
-module.exports = { up, down };
+export { up, down };

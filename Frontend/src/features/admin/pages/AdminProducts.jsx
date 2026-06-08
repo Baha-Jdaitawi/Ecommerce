@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useProducts from '../../products/hooks/useProducts.js';
+import { getImageUrl } from '../../../api/axios.js';
 
 const AdminProducts = () => {
   const { products, loading, error, fetchProducts, deleteProduct } = useProducts();
@@ -50,7 +51,7 @@ const AdminProducts = () => {
               <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                 <td className="py-4 px-2">
                   <img
-                    src={product.image_url || '/placeholder.png'}
+                    src={getImageUrl(product.image_url)}
                     alt={product.name}
                     className="w-14 h-14 object-cover bg-gray-100"
                   />

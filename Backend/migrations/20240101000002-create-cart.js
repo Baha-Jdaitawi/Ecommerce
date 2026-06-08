@@ -14,4 +14,4 @@ async function down(db) {
   await db.runSql(`DROP TABLE IF EXISTS cart;`);
 }
 
-module.exports = { up, down };
+export { up, down };

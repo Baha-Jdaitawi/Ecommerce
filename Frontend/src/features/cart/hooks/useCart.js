@@ -23,9 +23,9 @@ export const useCart = () => {
     try {
       setLoading(true);
       setError(null);
-      const item = await addToCartService(product_id, quantity);
-      setCart((prev) => [...prev, item]);
-      return item;
+      await addToCartService(product_id, quantity);
+      const updatedCart = await getCartService();
+      setCart(updatedCart);
     } catch (error) {
       setError(error?.response?.data?.message || 'Failed to add item');
     } finally {
@@ -74,3 +74,5 @@ export const useCart = () => {
 
   return { cart, loading, error, getCart, addItem, updateItem, deleteItem, clearCart };
 };
+
+export default useCart;

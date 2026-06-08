@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useOrders from '../hooks/useOrders.js';
+import { getImageUrl } from '../../../api/axios.js';
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const OrderDetailPage = () => {
               <div key={item.id} className="flex items-center gap-6 border-b border-gray-200 pb-4">
                 <div className="bg-gray-100 w-20 h-20 flex-shrink-0 overflow-hidden">
                   <img
-                    src={item.image_url || '/placeholder.png'}
+                    src={getImageUrl(item.image_url)}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />

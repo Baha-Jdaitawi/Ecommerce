@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { createOrder, createOrderItems, getOrdersByUserId, getOrderById } from '../models/order.model.js';
+import { createOrder, createOrderItems, getOrdersByUserId, getOrderById, updateOrderStatus } from '../models/order.model.js';
 import { clearCart } from '../models/cart.model.js';
 import { query } from '../config/db.js';
 
@@ -74,4 +74,60 @@ export const getOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
+};
+
+export const getOrderBySession = async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const result = await query(
+      'SELECT * FROM orders WHERE stripe_session_id = $1',
+      [sessionId]
+    );
+    const order = result.rows[0];
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    if (order.user_id !== req.user.id) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    res.status(200).json({ order });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const stripeWebhook = async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
+    return res.status(400).json({ message: `Webhook Error: ${err.message}` });
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    try {
+      const result = await query(
+        'UPDATE orders SET status = $1 WHERE stripe_session_id = $2 RETURNING *',
+        ['paid', session.id]
+      );
+      if (result.rows.length === 0) {
+        console.warn('No order found for session:', session.id);
+      } else {
+        console.log('Order marked as paid:', result.rows[0].id);
+      }
+    } catch (err) {
+      console.error('Failed to update order status:', err.message);
+      return res.status(500).json({ message: 'Failed to update order' });
+    }
+  }
+
+  res.status(200).json({ received: true });
 };

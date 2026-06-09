@@ -17,6 +17,7 @@ import CartPage from './features/cart/pages/CartPage.jsx';
 import OrdersPage from './features/orders/pages/OrdersPage.jsx';
 import CheckoutPage from './features/orders/pages/CheckoutPage.jsx';
 import OrderDetailPage from './features/orders/pages/OrderDetailPage.jsx';
+import OrderSuccessPage from './features/orders/pages/OrderSuccessPage.jsx';
 
 import AdminDashboard from './features/admin/pages/AdminDashboard.jsx';
 import AdminProducts from './features/admin/pages/AdminProducts.jsx';
@@ -40,6 +41,7 @@ function App() {
         <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
         <Route path="/orders/:id" element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>} />
         <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        <Route path="/order-success" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
 
         <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />

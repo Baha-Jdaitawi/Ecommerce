@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.js';
 
@@ -9,6 +9,11 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await login(email, password);
@@ -16,7 +21,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-col gap-6">
 
       <div>
         <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">
@@ -28,6 +33,7 @@ const LoginForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="your@email.com"
+          autoComplete="new-password"
           className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
         />
       </div>
@@ -42,6 +48,7 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
           placeholder="••••••••"
+          autoComplete="new-password"
           className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
         />
       </div>

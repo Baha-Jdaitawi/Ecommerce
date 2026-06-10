@@ -1,25 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.js';
+
+const validateEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
 
 const RegisterForm = () => {
   const { register, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [emailError, setEmailError] = useState('');
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  useEffect(() => {
+    setFormData({ name: '', email: '', password: '' });
+  }, []);
+
+  const passwordRules = [
+    { label: 'At least 8 characters', test: (p) => p.length >= 8 },
+    { label: 'At least 1 uppercase letter', test: (p) => /[A-Z]/.test(p) },
+    { label: 'At least 1 number', test: (p) => /[0-9]/.test(p) },
+    { label: 'At least 1 special character (!@#$%^&*)', test: (p) => /[!@#$%^&*]/.test(p) },
+  ];
+
+  const allPasswordValid = passwordRules.every((rule) => rule.test(formData.password));
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'email' && emailTouched) {
+      setEmailError(validateEmail(value) ? '' : 'Please enter a valid email');
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEmailTouched(true);
+    setPasswordTouched(true);
+
+    if (!validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email');
+      return;
+    }
+    if (!allPasswordValid) return;
+
     const data = await register(formData.name, formData.email, formData.password);
     if (data) navigate('/');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-col gap-6">
 
       <div>
         <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">
@@ -32,6 +65,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           required
           placeholder="Your full name"
+          autoComplete="new-password"
           className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
         />
       </div>
@@ -45,10 +79,18 @@ const RegisterForm = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          onBlur={() => {
+            setEmailTouched(true);
+            setEmailError(validateEmail(formData.email) ? '' : 'Please enter a valid email');
+          }}
           required
           placeholder="your@email.com"
-          className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
+          autoComplete="new-password"
+          className={`border-2 px-4 py-3 text-sm outline-none transition-colors w-full ${emailError ? 'border-red-500' : 'border-black focus:border-red-500'}`}
         />
+        {emailError && (
+          <p className="text-red-500 text-xs tracking-wide mt-1">• {emailError}</p>
+        )}
       </div>
 
       <div>
@@ -59,11 +101,30 @@ const RegisterForm = () => {
           type="password"
           name="password"
           value={formData.password}
-          onChange={handleChange}
+          onChange={(e) => {
+            handleChange(e);
+            setPasswordTouched(true);
+          }}
           required
           placeholder="••••••••"
-          className="border-2 border-black px-4 py-3 text-sm outline-none focus:border-red-500 transition-colors w-full"
+          autoComplete="new-password"
+          className={`border-2 px-4 py-3 text-sm outline-none transition-colors w-full ${
+            passwordTouched && !allPasswordValid ? 'border-red-500' : passwordTouched && allPasswordValid ? 'border-green-500' : 'border-black focus:border-red-500'
+          }`}
         />
+        {passwordTouched && (
+          <ul className="mt-3 flex flex-col gap-2">
+            {passwordRules.map((rule, i) => {
+              const passed = rule.test(formData.password);
+              return (
+                <li key={i} className={`text-xs tracking-wide flex items-center gap-2 ${passed ? 'text-green-500' : 'text-red-500'}`}>
+                  <span className="font-bold">{passed ? '✓' : '✗'}</span>
+                  {rule.label}
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
 
       {error && <p className="text-red-500 text-sm tracking-wide">{error}</p>}

@@ -11,7 +11,7 @@ const CartPage = () => {
     getCart();
   }, []);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-screen">
@@ -39,7 +39,6 @@ const CartPage = () => {
   return (
     <div className="bg-white min-h-screen px-6 md:px-16 py-16">
 
-      {/* Header */}
       <div className="flex items-center justify-between mb-12">
         <h1 className="font-['Bebas_Neue'] text-6xl tracking-widest text-black">YOUR CART</h1>
         <button
@@ -52,7 +51,6 @@ const CartPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
 
-        {/* Cart Items */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           {cart.map((item) => (
             <CartItem
@@ -64,7 +62,6 @@ const CartPage = () => {
           ))}
         </div>
 
-        {/* Summary */}
         <div className="lg:col-span-1">
           <CartSummary total={total} />
         </div>

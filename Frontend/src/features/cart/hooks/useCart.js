@@ -4,6 +4,7 @@ import { useState } from 'react';
 export const useCart = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
 
   const getCart = async () => {
@@ -35,27 +36,28 @@ export const useCart = () => {
 
   const updateItem = async (id, quantity) => {
     try {
-      setLoading(true);
+      setUpdating(true);
       setError(null);
-      const updatedItem = await updateItemService(id, quantity);
-      setCart((prev) => prev.map((item) => item.id === id ? updatedItem : item));
+      await updateItemService(id, quantity);
+      const updatedCart = await getCartService();
+      setCart(updatedCart);
     } catch (error) {
       setError(error?.response?.data?.message || 'Failed to update item');
     } finally {
-      setLoading(false);
+      setUpdating(false);
     }
   };
 
   const deleteItem = async (id) => {
     try {
-      setLoading(true);
+      setUpdating(true);
       setError(null);
       await removeItemService(id);
       setCart((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       setError(error?.response?.data?.message || 'Failed to remove item');
     } finally {
-      setLoading(false);
+      setUpdating(false);
     }
   };
 
@@ -72,7 +74,7 @@ export const useCart = () => {
     }
   };
 
-  return { cart, loading, error, getCart, addItem, updateItem, deleteItem, clearCart };
+  return { cart, loading, updating, error, getCart, addItem, updateItem, deleteItem, clearCart };
 };
 
 export default useCart;

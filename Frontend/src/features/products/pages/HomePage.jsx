@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useProducts from '../hooks/useProducts.js';
+import useAuth from '../../auth/hooks/useAuth.js';
 import ProductGrid from '../components/ProductGrid.jsx';
 
 const HomePage = () => {
   const { products, loading, error, fetchProducts } = useProducts();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchProducts();
@@ -22,7 +24,7 @@ const HomePage = () => {
           Built for the relentless. Designed for the bold.
         </p>
         <Link
-          to="/products"
+          to={user ? '/products' : '/register'}
           className="mt-10 bg-white text-black font-semibold tracking-widest uppercase px-10 py-4 text-sm hover:bg-red-500 hover:text-white transition-all duration-300"
         >
           Shop Now
@@ -60,12 +62,6 @@ const HomePage = () => {
             PUSH YOUR<br />LIMITS
           </h2>
         </div>
-        <Link
-          to="/products"
-          className="bg-white text-black font-semibold tracking-widest uppercase px-10 py-4 text-sm hover:bg-red-500 hover:text-white transition-all duration-300 whitespace-nowrap"
-        >
-          Explore All
-        </Link>
       </section>
 
     </div>

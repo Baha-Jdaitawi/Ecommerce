@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import useProducts from '../hooks/useProducts.js';
 import useReviews from '../../reviews/hooks/useReviews.js';
 import useAuth from '../../auth/hooks/useAuth.js';
@@ -13,12 +13,26 @@ const ProductDetailPage = () => {
   const { product, loading, error, fetchProduct } = useProducts();
   const { reviews, fetchReviews, deleteReview } = useReviews();
   const { user } = useAuth();
-  const { addItem } = useCart();
+  const { addItem, cart, getCart } = useCart();
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     fetchProduct(id);
     fetchReviews(id);
+    if (user) getCart();
   }, [id]);
+
+  useEffect(() => {
+    if (cart && cart.length > 0) {
+      const inCart = cart.some((item) => item.product_id === parseInt(id));
+      setAdded(inCart);
+    }
+  }, [cart, id]);
+
+  const handleAddToCart = async () => {
+    await addItem(product.id, 1);
+    setAdded(true);
+  };
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-screen">
@@ -32,10 +46,8 @@ const ProductDetailPage = () => {
   return (
     <div className="bg-white min-h-screen">
 
-      {/* Product Section */}
       <div className="px-6 md:px-16 py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
 
-        {/* Image */}
         <div className="bg-gray-100 aspect-square overflow-hidden">
           <img
             src={getImageUrl(product.image_url)}
@@ -44,7 +56,6 @@ const ProductDetailPage = () => {
           />
         </div>
 
-        {/* Info */}
         <div className="flex flex-col justify-center">
           <span className="bg-black text-white text-xs font-semibold tracking-widest uppercase px-3 py-1 w-fit mb-4">
             {product.category}
@@ -66,17 +77,31 @@ const ProductDetailPage = () => {
             <p className="text-gray-400 text-sm tracking-widest uppercase mb-6">{product.stock} in stock</p>
           )}
 
-          <button
-            disabled={product.stock === 0}
-            onClick={() => addItem(product.id, 1)}
-            className="bg-black text-white font-semibold tracking-widest uppercase py-4 text-sm hover:bg-red-500 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
-          >
-            {product.stock === 0 ? 'Sold Out' : 'Add to Cart'}
-          </button>
+          {user ? (
+            <button
+              disabled={product.stock === 0 || added}
+              onClick={handleAddToCart}
+              className={`font-semibold tracking-widest uppercase py-4 text-sm transition-colors duration-300 ${
+                added
+                  ? 'bg-green-500 text-white cursor-not-allowed'
+                  : product.stock === 0
+                  ? 'bg-gray-300 text-white cursor-not-allowed'
+                  : 'bg-black text-white hover:bg-red-500'
+              }`}
+            >
+              {added ? 'In Cart ✓' : product.stock === 0 ? 'Sold Out' : 'Add to Cart'}
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="block bg-black text-white font-semibold tracking-widest uppercase py-4 text-sm hover:bg-red-500 transition-colors duration-300 text-center"
+            >
+              Login to Buy
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Reviews Section */}
       <div className="px-6 md:px-16 py-16 border-t border-gray-200">
         <h2 className="font-['Bebas_Neue'] text-5xl tracking-widest text-black mb-10">REVIEWS</h2>
 

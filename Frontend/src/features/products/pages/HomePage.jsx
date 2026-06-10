@@ -13,11 +13,10 @@ const HomePage = () => {
   return (
     <div className="bg-white min-h-screen">
 
-      {/* Hero Section */}
       <section className="bg-black text-white min-h-[90vh] flex flex-col items-center justify-center text-center px-6">
         <p className="text-red-500 text-sm font-semibold tracking-[0.3em] uppercase mb-4">New Collection</p>
         <h1 className="font-['Bebas_Neue'] text-[8rem] md:text-[12rem] leading-none tracking-widest text-white">
-          FORZA
+          REIGN
         </h1>
         <p className="text-gray-400 text-lg md:text-xl max-w-xl mt-4 font-light tracking-wide">
           Built for the relentless. Designed for the bold.
@@ -30,7 +29,6 @@ const HomePage = () => {
         </Link>
       </section>
 
-      {/* Featured Products */}
       <section className="px-6 md:px-16 py-20">
         <div className="flex items-center justify-between mb-10">
           <h2 className="font-['Bebas_Neue'] text-5xl tracking-widest text-black">
@@ -55,7 +53,6 @@ const HomePage = () => {
         <ProductGrid products={products.slice(0, 4)} />
       </section>
 
-      {/* Banner Section */}
       <section className="bg-black text-white px-6 md:px-16 py-24 flex flex-col md:flex-row items-center justify-between gap-10">
         <div>
           <p className="text-red-500 text-sm font-semibold tracking-[0.3em] uppercase mb-3">Limited Edition</p>

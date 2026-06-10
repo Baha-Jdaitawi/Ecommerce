@@ -22,13 +22,11 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
 
-      {/* Left - Black Panel */}
       <div className="bg-black text-white hidden md:flex flex-col items-center justify-center px-16">
-        <h1 className="font-['Bebas_Neue'] text-[8rem] tracking-widest leading-none text-white">FORZA</h1>
+        <h1 className="font-['Bebas_Neue'] text-[8rem] tracking-widest leading-none text-white">REIGN</h1>
         <p className="text-gray-400 tracking-widest uppercase text-sm mt-4">Built for the relentless.</p>
       </div>
 
-      {/* Right - Form Panel */}
       <div className="flex flex-col items-center justify-center px-6 md:px-16 py-16">
         <div className="w-full max-w-md">
           <p className="text-red-500 text-sm font-semibold tracking-[0.3em] uppercase mb-2">Welcome Back</p>

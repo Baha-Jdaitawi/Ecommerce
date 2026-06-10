@@ -15,7 +15,7 @@ const Navbar = () => {
       
       {/* Logo */}
       <Link to="/" className="font-['Bebas_Neue'] text-3xl tracking-widest text-white hover:text-red-500 transition-colors">
-        FORZA
+        REIGN
       </Link>
 
       {/* Center Links */}

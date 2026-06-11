@@ -14,6 +14,7 @@ const RegisterForm = () => {
   const [emailError, setEmailError] = useState('');
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     setFormData({ name: '', email: '', password: '' });
@@ -48,11 +49,20 @@ const RegisterForm = () => {
     if (!allPasswordValid) return;
 
     const data = await register(formData.name, formData.email, formData.password);
-    if (data) navigate('/');
+    if (data) {
+      setSuccess(true);
+      setTimeout(() => navigate('/'), 3000);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-col gap-6">
+
+      {success && (
+        <div className="bg-green-500 text-white px-4 py-3 text-sm font-semibold tracking-widest uppercase text-center">
+          Account created successfully! Redirecting...
+        </div>
+      )}
 
       <div>
         <label className="text-xs font-semibold tracking-widest uppercase text-black block mb-2">
@@ -131,7 +141,7 @@ const RegisterForm = () => {
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || success}
         className="bg-black text-white font-semibold tracking-widest uppercase py-4 text-sm hover:bg-red-500 transition-colors duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
       >
         {loading ? 'Creating Account...' : 'Create Account'}

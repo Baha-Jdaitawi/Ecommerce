@@ -14,13 +14,11 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Links */}
+        {/* Shop */}
         <div>
           <p className="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-6">Shop</p>
           <div className="flex flex-col gap-3">
             <Link to="/products" className="text-sm tracking-widest uppercase hover:text-red-500 transition-colors">Products</Link>
-            <Link to="/cart" className="text-sm tracking-widest uppercase hover:text-red-500 transition-colors">Cart</Link>
-            <Link to="/orders" className="text-sm tracking-widests uppercase hover:text-red-500 transition-colors">Orders</Link>
           </div>
         </div>
 
